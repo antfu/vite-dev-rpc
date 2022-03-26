@@ -10,6 +10,7 @@ function DemoPlugin(): Plugin {
     configureServer(server) {
       createRPCServer<RPCFunctions>('demo', server.ws, {
         add(a, b) {
+          // eslint-disable-next-line no-console
           console.log(`RPC ${a} ADD ${b}`)
           return a + b
         },
