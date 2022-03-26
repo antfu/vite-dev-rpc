@@ -8,15 +8,12 @@ function DemoPlugin(): Plugin {
   return {
     name: 'demo',
     configureServer(server) {
-      createRPCServer<RPCFunctions>(
-        'demo',
-        server.ws,
-        {
-          add(a, b) {
-            return a + b
-          },
+      createRPCServer<RPCFunctions>('demo', server.ws, {
+        add(a, b) {
+          console.log(`RPC ${a} ADD ${b}`)
+          return a + b
         },
-      )
+      })
     },
   }
 }

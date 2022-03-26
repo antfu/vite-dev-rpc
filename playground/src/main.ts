@@ -9,10 +9,7 @@ app.innerHTML = `
 `
 
 if (import.meta.hot) {
-  const rpc = createRPCClient<RPCFunctions>(
-    'demo',
-    import.meta.hot,
-  )
+  const rpc = createRPCClient<RPCFunctions>('demo', import.meta.hot)
 
   const div = document.createElement('div')
   div.textContent = `100 + 500 = ${await rpc.add(100, 500)}`
