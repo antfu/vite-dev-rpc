@@ -1,17 +1,33 @@
 import './style.css'
 import { createRPCClient } from 'vite-dev-rpc'
-import type { RPCFunctions } from './rpc'
+import type { ClientFunctions, ServerFunctions } from './rpc'
 
 const app = document.querySelector<HTMLDivElement>('#app')!
 
 app.innerHTML = `
-  <h1>Calculated at server</h1>
+  <h1>vite-dev-rpc</h1>
+  <div id="output"></div>
+  <button id="button">Update</button>
+  <div id="msg"></div>
 `
 
 if (import.meta.hot) {
-  const rpc = createRPCClient<RPCFunctions>('demo', import.meta.hot)
+  const div = document.getElementById('output')!
+  const button = document.getElementById('button')!
+  const msg = document.getElementById('msg')!
+  button.addEventListener('click', update)
 
-  const div = document.createElement('div')
-  div.textContent = `100 + 500 = ${await rpc.add(100, 500)}`
-  document.body.appendChild(div)
+  const rpc = createRPCClient<ServerFunctions, ClientFunctions>('demo', import.meta.hot, {
+    alert(message) {
+      msg.textContent = message
+    },
+  })
+
+  async function update() {
+    const a = Math.floor(Math.random() * 100)
+    const b = Math.floor(Math.random() * 100)
+    div.textContent = `${a} + ${b} = ${await rpc.add(a, b)}`
+  }
+
+  update()
 }
