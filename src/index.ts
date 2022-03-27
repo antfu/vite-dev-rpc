@@ -13,7 +13,7 @@ export function createRPCServer<ClientFunction = {}, ServerFunctions = {}>(
   const group = createBirpcGroup<ClientFunction, ServerFunctions>(
     functions,
     () => cachedMap(
-      Array.from(ws.clients),
+      Array.from(ws?.clients || []),
       (socket): ChannelOptions => {
         return {
           on: (fn) => {
