@@ -6,6 +6,12 @@ Remote procedure call for client-server communication in Vite plugins.
 
 > Requires Vite ^2.9.0-beta.9
 
+Based on
+
+- [`birpc`](https://github.com/antfu/birpc) - Message-based two-way remote procedure call.
+- [`vite-hot-client`](https://github.com/antfu/vite-hot-client) - Get `import.meta.hot` at runtime.
+- [`import.meta.hot.send` API in Vite 2.9](https://github.com/vitejs/vite/pull/7437) - Server-client communication support.
+
 ## Sponsors
 
 <p align="center">
