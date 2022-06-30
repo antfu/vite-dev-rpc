@@ -49,7 +49,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": "^2.9.0"
+    "vite": "^2.9.0 || ^3.0.0-0"
   },
   "dependencies": {
     "birpc": "^0.2.3",
