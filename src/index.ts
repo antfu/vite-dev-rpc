@@ -47,7 +47,6 @@ export function createRPCClient<ServerFunctions = {}, ClientFunctions = {}>(
     functions,
     {
       on: (fn) => {
-        // @ts-expect-error bug
         hot.on(event, fn)
       },
       post: (data) => {
