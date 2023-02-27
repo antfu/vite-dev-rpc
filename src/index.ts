@@ -34,23 +34,23 @@ export function createRPCServer<ClientFunction = {}, ServerFunctions = {}>(
     group.updateChannels()
   })
 
-  return group.boardcast
+  return group.broadcast
 }
 
 export function createRPCClient<ServerFunctions = {}, ClientFunctions = {}>(
   name: string,
-  hot: ViteHotContext,
+  hot: ViteHotContext | Promise<ViteHotContext>,
   functions: ClientFunctions = {} as ClientFunctions,
 ) {
   const event = `${name}:rpc`
-  return createBirpc<ServerFunctions>(
+  return createBirpc<ServerFunctions, ClientFunctions>(
     functions,
     {
-      on: (fn) => {
-        hot.on(event, fn)
+      on: async (fn) => {
+        (await hot).on(event, fn)
       },
-      post: (data) => {
-        hot.send(event, data)
+      post: async (data) => {
+        (await hot).send(event, data)
       },
     },
   )
