@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import { defineConfig } from 'vite'
 import { createRPCServer } from 'vite-dev-rpc'
