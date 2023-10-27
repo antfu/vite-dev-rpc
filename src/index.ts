@@ -1,4 +1,4 @@
-import type { ChannelOptions } from 'birpc'
+import type { BirpcOptions, ChannelOptions, EventOptions } from 'birpc'
 import { cachedMap, createBirpc, createBirpcGroup } from 'birpc'
 import type { WebSocketClient, WebSocketServer } from 'vite'
 import type { ViteHotContext } from 'vite-hot-client'
@@ -7,6 +7,7 @@ export function createRPCServer<ClientFunction = {}, ServerFunctions = {}>(
   name: string,
   ws: WebSocketServer,
   functions: ServerFunctions,
+  options: EventOptions<ClientFunction> = {} as EventOptions<ClientFunction>,
 ) {
   const event = `${name}:rpc`
 
@@ -28,6 +29,7 @@ export function createRPCServer<ClientFunction = {}, ServerFunctions = {}>(
         }
       },
     ),
+    options,
   )
 
   ws.on('connection', () => {
@@ -41,6 +43,7 @@ export function createRPCClient<ServerFunctions = {}, ClientFunctions = {}>(
   name: string,
   hot: ViteHotContext | Promise<ViteHotContext>,
   functions: ClientFunctions = {} as ClientFunctions,
+  options: Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'> = {} as Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'>,
 ) {
   const event = `${name}:rpc`
   return createBirpc<ServerFunctions, ClientFunctions>(
@@ -52,6 +55,7 @@ export function createRPCClient<ServerFunctions = {}, ClientFunctions = {}>(
       post: async (data) => {
         (await hot).send(event, data)
       },
+      ...options,
     },
   )
 }
