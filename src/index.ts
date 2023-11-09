@@ -3,7 +3,7 @@ import { cachedMap, createBirpc, createBirpcGroup } from 'birpc'
 import type { WebSocketClient, WebSocketServer } from 'vite'
 import type { ViteHotContext } from 'vite-hot-client'
 
-export function createRPCServer<ClientFunction = {}, ServerFunctions = {}>(
+export function createRPCServer<ClientFunction = unknown, ServerFunctions = unknown>(
   name: string,
   ws: WebSocketServer,
   functions: ServerFunctions,
@@ -39,11 +39,11 @@ export function createRPCServer<ClientFunction = {}, ServerFunctions = {}>(
   return group.broadcast
 }
 
-export function createRPCClient<ServerFunctions = {}, ClientFunctions = {}>(
+export function createRPCClient<ServerFunctions = unknown, ClientFunctions = unknown>(
   name: string,
   hot: ViteHotContext | Promise<ViteHotContext>,
   functions: ClientFunctions = {} as ClientFunctions,
-  options: Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'> = {}
+  options: Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'> = {},
 ) {
   const event = `${name}:rpc`
   return createBirpc<ServerFunctions, ClientFunctions>(
