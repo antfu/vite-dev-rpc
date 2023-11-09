@@ -7,7 +7,7 @@ export function createRPCServer<ClientFunction = {}, ServerFunctions = {}>(
   name: string,
   ws: WebSocketServer,
   functions: ServerFunctions,
-  options: EventOptions<ClientFunction> = {} as EventOptions<ClientFunction>,
+  options: EventOptions<ClientFunction> = {},
 ) {
   const event = `${name}:rpc`
 
@@ -43,19 +43,19 @@ export function createRPCClient<ServerFunctions = {}, ClientFunctions = {}>(
   name: string,
   hot: ViteHotContext | Promise<ViteHotContext>,
   functions: ClientFunctions = {} as ClientFunctions,
-  options: Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'> = {} as Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'>,
+  options: Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'> = {}
 ) {
   const event = `${name}:rpc`
   return createBirpc<ServerFunctions, ClientFunctions>(
     functions,
     {
+      ...options,
       on: async (fn) => {
         (await hot).on(event, fn)
       },
       post: async (data) => {
         (await hot).send(event, data)
       },
-      ...options,
     },
   )
 }
