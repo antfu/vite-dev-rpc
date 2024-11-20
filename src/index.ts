@@ -41,20 +41,28 @@ export function createRPCServer<ClientFunction extends object, ServerFunctions e
 
 export function createRPCClient<ServerFunctions extends object, ClientFunctions extends object>(
   name: string,
-  hot: ViteHotContext | Promise<ViteHotContext>,
+  hot: ViteHotContext | undefined | Promise<ViteHotContext| undefined>,
   functions: ClientFunctions = {} as ClientFunctions,
   options: Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'> = {},
 ) {
   const event = `${name}:rpc`
+
+  const promise = Promise.resolve(hot)
+    .then(r=>{
+      if (!r) 
+        console.warn('[vite-hot-client] Received undefined hot context, RPC calls are ignored')
+      return r
+    })
+
   return createBirpc<ServerFunctions, ClientFunctions>(
     functions,
     {
       ...options,
       on: async (fn) => {
-        (await hot).on(event, fn)
+        (await promise)?.on(event, fn)
       },
       post: async (data) => {
-        (await hot).send(event, data)
+        (await promise)?.send(event, data)
       },
     },
   )
