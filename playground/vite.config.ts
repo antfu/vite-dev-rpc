@@ -1,8 +1,8 @@
-import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
+import type { ClientFunctions, ServerFunctions } from './src/rpc'
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import { createRPCServer } from 'vite-dev-rpc'
-import type { ClientFunctions, ServerFunctions } from './src/rpc'
 
 function DemoPlugin(): Plugin {
   return {
@@ -10,7 +10,6 @@ function DemoPlugin(): Plugin {
     configureServer(server) {
       const rpc = createRPCServer<ClientFunctions, ServerFunctions>('demo', server.ws, {
         add(a, b) {
-          // eslint-disable-next-line no-console
           console.log(`RPC ${a} ADD ${b}`)
           const result = a + b
           if (result > 150) {

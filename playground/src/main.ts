@@ -1,6 +1,6 @@
-import './style.css'
-import { createRPCClient } from 'vite-dev-rpc'
 import type { ClientFunctions, ServerFunctions } from './rpc'
+import { createRPCClient } from 'vite-dev-rpc'
+import './style.css'
 
 const app = document.querySelector<HTMLDivElement>('#app')!
 

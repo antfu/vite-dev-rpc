@@ -1,9 +1,9 @@
 import type { BirpcOptions, ChannelOptions, EventOptions } from 'birpc'
-import { cachedMap, createBirpc, createBirpcGroup } from 'birpc'
 import type { WebSocketClient, WebSocketServer } from 'vite'
 import type { ViteHotContext } from 'vite-hot-client'
+import { cachedMap, createBirpc, createBirpcGroup } from 'birpc'
 
-export function createRPCServer<ClientFunction = unknown, ServerFunctions = unknown>(
+export function createRPCServer<ClientFunction extends object, ServerFunctions extends object>(
   name: string,
   ws: WebSocketServer,
   functions: ServerFunctions,
@@ -39,7 +39,7 @@ export function createRPCServer<ClientFunction = unknown, ServerFunctions = unkn
   return group.broadcast
 }
 
-export function createRPCClient<ServerFunctions = unknown, ClientFunctions = unknown>(
+export function createRPCClient<ServerFunctions extends object, ClientFunctions extends object>(
   name: string,
   hot: ViteHotContext | Promise<ViteHotContext>,
   functions: ClientFunctions = {} as ClientFunctions,

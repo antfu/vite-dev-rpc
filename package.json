@@ -2,7 +2,7 @@
   "name": "vite-dev-rpc",
   "type": "module",
   "version": "0.1.4",
-  "packageManager": "pnpm@8.10.5",
+  "packageManager": "pnpm@9.14.2",
   "description": "Remote procedure call for client-server communication in Vite plugins",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -50,25 +50,25 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": "^2.9.0 || ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0"
+    "vite": "^2.9.0 || ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0 || ^6.0.0-0"
   },
   "dependencies": {
-    "birpc": "^0.2.14",
+    "birpc": "^0.2.19",
     "vite-hot-client": "^0.2.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^1.2.0",
-    "@antfu/ni": "^0.21.9",
-    "@babel/types": "^7.23.3",
-    "@types/node": "^20.9.1",
-    "bumpp": "^9.2.0",
-    "eslint": "^8.53.0",
-    "esno": "^4.0.0",
-    "pnpm": "^8.10.5",
-    "rimraf": "^5.0.5",
-    "typescript": "^5.2.2",
+    "@antfu/eslint-config": "^3.9.2",
+    "@antfu/ni": "^0.23.1",
+    "@babel/types": "^7.26.0",
+    "@types/node": "^22.9.1",
+    "bumpp": "^9.8.1",
+    "eslint": "^9.15.0",
+    "esno": "^4.8.0",
+    "pnpm": "^9.14.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3",
     "unbuild": "^2.0.0",
-    "vite": "^5.0.0",
-    "vitest": "^0.34.6"
+    "vite": "^5.4.11",
+    "vitest": "^2.1.5"
   }
 }
