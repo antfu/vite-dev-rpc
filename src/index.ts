@@ -15,20 +15,28 @@ export function createRPCServer<ClientFunction extends object, ServerFunctions e
     functions,
     () => cachedMap(
       Array.from(ws?.clients || []),
-      (socket): ChannelOptions => {
+      (channel): ChannelOptions | undefined => {
+        if (channel.socket.readyState === channel.socket.CLOSED)
+          return undefined
         return {
           on: (fn) => {
-            ws.on(event, (data: any, source: WebSocketClient) => {
-              if (socket === source)
-                fn(data)
+            function handler(data: any, source: WebSocketClient) {
+              if (!source.socket)
+                throw new Error('source.socket is undefined')
+              if (channel.socket === source.socket)
+                fn(data, source)
+            }
+            ws.on(event, handler)
+            channel.socket.on('close', () => {
+              ws.off(event, handler)
             })
           },
           post: (data) => {
-            socket.send(event, data)
+            channel.send(event, data)
           },
         }
       },
-    ),
+    ).filter(c => !!c),
     options,
   )
 
@@ -41,15 +49,15 @@ export function createRPCServer<ClientFunction extends object, ServerFunctions e
 
 export function createRPCClient<ServerFunctions extends object, ClientFunctions extends object>(
   name: string,
-  hot: ViteHotContext | undefined | Promise<ViteHotContext| undefined>,
+  hot: ViteHotContext | undefined | Promise<ViteHotContext | undefined>,
   functions: ClientFunctions = {} as ClientFunctions,
   options: Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'> = {},
 ) {
   const event = `${name}:rpc`
 
   const promise = Promise.resolve(hot)
-    .then(r=>{
-      if (!r) 
+    .then((r) => {
+      if (!r)
         console.warn('[vite-hot-client] Received undefined hot context, RPC calls are ignored')
       return r
     })
