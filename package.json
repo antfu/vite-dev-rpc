@@ -1,7 +1,7 @@
 {
   "name": "vite-dev-rpc",
   "type": "module",
-  "version": "0.1.7",
+  "version": "1.0.7",
   "packageManager": "pnpm@9.15.3",
   "description": "Remote procedure call for client-server communication in Vite plugins",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
