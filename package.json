@@ -2,7 +2,7 @@
   "name": "vite-dev-rpc",
   "type": "module",
   "version": "1.0.7",
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.12.4",
   "description": "Remote procedure call for client-server communication in Vite plugins",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -53,22 +53,22 @@
     "vite": "^2.9.0 || ^3.0.0-0 || ^4.0.0-0 || ^5.0.0-0 || ^6.0.1 || ^7.0.0-0"
   },
   "dependencies": {
-    "birpc": "^2.3.0",
-    "vite-hot-client": "^2.0.4"
+    "birpc": "^2.4.0",
+    "vite-hot-client": "^2.1.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.13.1",
-    "@antfu/ni": "^24.4.0",
-    "@babel/types": "^7.27.1",
-    "@types/node": "^22.15.18",
-    "bumpp": "^10.1.1",
-    "eslint": "^9.27.0",
+    "@antfu/eslint-config": "^4.16.1",
+    "@antfu/ni": "^25.0.0",
+    "@babel/types": "^7.27.7",
+    "@types/node": "^24.0.7",
+    "bumpp": "^10.2.0",
+    "eslint": "^9.30.0",
     "esno": "^4.8.0",
-    "pnpm": "^10.11.0",
+    "pnpm": "^10.12.4",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3",
     "unbuild": "^3.5.0",
-    "vite": "^6.3.5",
-    "vitest": "^3.1.3"
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4"
   }
 }
