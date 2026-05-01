@@ -1,24 +1,28 @@
 import type { BirpcOptions, ChannelOptions, EventOptions } from 'birpc'
 import type { WebSocketClient, WebSocketServer } from 'vite'
 import type { ViteHotContext } from 'vite-hot-client'
-import { cachedMap, createBirpc, createBirpcGroup } from 'birpc'
+import { createBirpc, createBirpcGroup } from 'birpc'
+
+const channelCache = new WeakMap<WebSocketClient, ChannelOptions>()
 
 export function createRPCServer<ClientFunction extends object, ServerFunctions extends object>(
   name: string,
   ws: WebSocketServer,
   functions: ServerFunctions,
-  options: EventOptions<ClientFunction> = {},
+  options: EventOptions<ClientFunction, ServerFunctions> = {},
 ) {
   const event = `${name}:rpc`
 
   const group = createBirpcGroup<ClientFunction, ServerFunctions>(
     functions,
-    () => cachedMap(
-      Array.from(ws?.clients || []),
-      (channel): ChannelOptions | undefined => {
+    () => Array.from(ws?.clients || [])
+      .map((channel: WebSocketClient): ChannelOptions | undefined => {
         if (channel.socket.readyState === channel.socket.CLOSED)
           return undefined
-        return {
+        const cached = channelCache.get(channel)
+        if (cached)
+          return cached
+        const options: ChannelOptions = {
           on: (fn) => {
             function handler(data: any, source: WebSocketClient) {
               if (!source.socket)
@@ -35,8 +39,10 @@ export function createRPCServer<ClientFunction extends object, ServerFunctions e
             channel.send(event, data)
           },
         }
-      },
-    ).filter(c => !!c),
+        channelCache.set(channel, options)
+        return options
+      })
+      .filter(c => !!c),
     options,
   )
 
@@ -51,7 +57,7 @@ export function createRPCClient<ServerFunctions extends object, ClientFunctions 
   name: string,
   hot: ViteHotContext | undefined | Promise<ViteHotContext | undefined>,
   functions: ClientFunctions = {} as ClientFunctions,
-  options: Omit<BirpcOptions<ServerFunctions>, 'on' | 'post'> = {},
+  options: Omit<BirpcOptions<ServerFunctions, ClientFunctions>, 'on' | 'post'> = {},
 ) {
   const event = `${name}:rpc`
 
